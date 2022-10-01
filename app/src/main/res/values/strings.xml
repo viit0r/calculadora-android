@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Calculadora</string>
+    <string name="resultado">Resultado</string>
+    <string name="calcular">Calcular</string>
+    <string name="sair">Sair</string>
+    <string name="dividir">Dividir</string>
+    <string name="multiplicar">Multiplicar</string>
+    <string name="subtrair">Subtrair</string>
+    <string name="somar">Somar</string>
+    <string name="resto">Resto da divisão</string>
+    <string name="limpar">Limpar</string>
+    <string name="historico">Histórico</string>
+    <string name="sem_historico">Sem histórico</string>
+</resources>
