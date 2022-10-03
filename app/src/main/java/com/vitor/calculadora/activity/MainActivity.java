@@ -2,7 +2,6 @@ package com.vitor.calculadora.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vitor.calculadora.R;
 import com.vitor.calculadora.model.Calculadora;
 
@@ -26,7 +24,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText numero1, numero2;
+    private Toolbar toolbar;
+    private EditText txtValor1, txtValor2;
     private RadioGroup radioGroup;
     private Button calcula, limpa;
     private TextView resultado;
@@ -38,25 +37,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        setSupportActionBar(toolbar);
         getReferences();
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int idRadio) {
-                trocaOperacao(idRadio);
-            }
-        });
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        setSupportActionBar(toolbar);
+
         calcula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    if (!numero1.getText().toString().isEmpty() && !numero2.getText().toString().isEmpty()) {
-                        double num1 = Double.parseDouble(numero1.getText().toString());
-                        double num2 = Double.parseDouble(numero2.getText().toString());
+                    if (!txtValor1.getText().toString().isEmpty() && !txtValor2.getText().toString().isEmpty()) {
+                        double num1 = Double.parseDouble(txtValor1.getText().toString());
+                        double num2 = Double.parseDouble(txtValor2.getText().toString());
                         Calculadora calculadora = new Calculadora(num1, num2);
 
                         switch (radioGroup.getCheckedRadioButtonId()) {
@@ -98,16 +90,60 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         limpa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                numero1.setText("");
-                numero2.setText("");
-                operacao.setImageResource(0);
                 radioGroup.clearCheck();
+                txtValor1.setText("");
+                txtValor2.setText("");
+                operacao.setImageResource(0);
                 resultado.setText("0.0");
             }
         });
+
+        resultado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String numeroResultado = resultado.getText().toString();
+                if (!numeroResultado.isEmpty() && !numeroResultado.equals("0.0")) {
+                    limpa.callOnClick();
+                    txtValor1.setText(numeroResultado);
+                }
+            }
+        });
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int idRadio) {
+                trocaOperacao(idRadio);
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_calculadora, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionHistorico:
+                Intent intent = new Intent(MainActivity.this, HistoricoActivity.class);
+                for (int i = 0; i < resultados.size(); i++) {
+                    intent.putExtra("numero " + i, resultados.get(i));
+                }
+                for (int i = 0; i < resultados.size(); i++) {
+                    intent.putExtra("operacao " + i, operacoes.get(i));
+                }
+                startActivity(intent);
+                break;
+            case R.id.actionSair:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void trocaOperacao(int idRadio) {
@@ -134,37 +170,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getReferences() {
-        numero1 = findViewById(R.id.txtValor1);
-        numero2 = findViewById(R.id.txtValor2);
+        toolbar = findViewById(R.id.toolbar);
+        txtValor1 = findViewById(R.id.txtValor1);
+        txtValor2 = findViewById(R.id.txtValor2);
         calcula = findViewById(R.id.cmdCalcular);
         limpa = findViewById(R.id.cmdLimpar);
         resultado = findViewById(R.id.lblResultado);
         radioGroup = findViewById(R.id.radioGroup);
         operacao = findViewById(R.id.imgOperacao);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_calculadora, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.actionHistorico:
-                Intent intent = new Intent(MainActivity.this, HistoricoActivity.class);
-                for (int i = 0; i < resultados.size(); i++){
-                    intent.putExtra("numero " + i, resultados.get(i));
-                }
-                for (int i = 0; i < resultados.size(); i++){
-                    intent.putExtra("operacao " + i, operacoes.get(i));
-                }
-                startActivity(intent);
-                break;
-            case R.id.actionSair:
-                finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
