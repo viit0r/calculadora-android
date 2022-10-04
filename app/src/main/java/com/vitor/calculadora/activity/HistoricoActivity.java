@@ -1,6 +1,7 @@
 package com.vitor.calculadora.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vitor.calculadora.R;
 import com.vitor.calculadora.adapter.HistoricoAdapter;
+import com.vitor.calculadora.model.Calculo;
 import com.vitor.calculadora.utils.ClickListener;
 import com.vitor.calculadora.utils.Const;
 
@@ -69,7 +72,21 @@ public class HistoricoActivity extends AppCompatActivity {
 
                     @Override
                     public void onItemLongClick(int position, View view) {
-
+                        AlertDialog.Builder builder = new AlertDialog.Builder(HistoricoActivity.this);
+                        builder.setMessage("Deseja mesmo remover o item do histórico?");
+                        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                resultados.remove(position);
+                                operacoes.remove(position);
+                                Calculo.removeResultado(position);
+                                Calculo.removeOperacao(position);
+                                historicoAdapter.notifyDataSetChanged();
+                                temResultados();
+                            }
+                        });
+                        builder.setNegativeButton("Nao", null);
+                        builder.create().show();
                     }
                 });
             }

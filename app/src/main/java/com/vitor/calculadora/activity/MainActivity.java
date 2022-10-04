@@ -21,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.vitor.calculadora.R;
 import com.vitor.calculadora.model.Calculadora;
+import com.vitor.calculadora.model.Calculo;
 import com.vitor.calculadora.utils.Const;
 
 import java.util.ArrayList;
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionHistorico:
+                Calculo calculo = new Calculo(resultados, operacoes);
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList(Const.LISTA_RESULTADOS, (ArrayList<String>) resultados);
                 bundle.putStringArrayList(Const.LISTA_OPERACOES, (ArrayList<String>) operacoes);
@@ -154,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.ABRE_HISTORICO) {
             if (resultCode == Activity.RESULT_OK) {
+                resultados = Calculo.getResultados();
+                operacoes = Calculo.getOperacoes();
                 txtValor1.setText(data.getStringArrayExtra(Const.RETORNO_NUMEROS_OPERACAO)[0]);
                 txtValor2.setText(data.getStringArrayExtra(Const.RETORNO_NUMEROS_OPERACAO)[1]);
                 resultado.setText(data.getStringExtra(Const.RETORNO_RESULTADO));
