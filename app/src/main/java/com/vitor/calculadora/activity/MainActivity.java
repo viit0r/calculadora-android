@@ -1,5 +1,6 @@
 package com.vitor.calculadora.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,16 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.vitor.calculadora.R;
 import com.vitor.calculadora.model.Calculadora;
+import com.vitor.calculadora.utils.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText txtValor1, txtValor2;
     private RadioGroup radioGroup;
+    private RadioButton soma, subtrai, multiplica, divide, resto;
     private Button calcula, limpa;
     private TextView resultado;
     private ImageView operacao;
@@ -65,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.optMultiplica:
                                 resultado.setText(String.valueOf(calculadora.multiplicar()));
                                 resultados.add(String.valueOf(calculadora.multiplicar()));
-                                operacoes.add(num1 + " x " + num2);
+                                operacoes.add(num1 + " * " + num2);
                                 break;
                             case R.id.optDivide:
                                 resultado.setText(String.valueOf(calculadora.dividir()));
@@ -116,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int idRadio) {
-                trocaOperacao(idRadio);
+                trocaOperacaoPorId(idRadio);
             }
         });
     }
@@ -131,22 +136,62 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionHistorico:
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(Const.LISTA_RESULTADOS, (ArrayList<String>) resultados);
+                bundle.putStringArrayList(Const.LISTA_OPERACOES, (ArrayList<String>) operacoes);
                 Intent intent = new Intent(MainActivity.this, HistoricoActivity.class);
-                for (int i = 0; i < resultados.size(); i++) {
-                    intent.putExtra("numero " + i, resultados.get(i));
-                }
-                for (int i = 0; i < resultados.size(); i++) {
-                    intent.putExtra("operacao " + i, operacoes.get(i));
-                }
-                startActivity(intent);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, Const.ABRE_HISTORICO);
                 break;
             case R.id.actionSair:
-                finish();
+                finishAffinity();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void trocaOperacao(int idRadio) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.ABRE_HISTORICO) {
+            if (resultCode == Activity.RESULT_OK) {
+                txtValor1.setText(data.getStringArrayExtra(Const.RETORNO_NUMEROS_OPERACAO)[0]);
+                txtValor2.setText(data.getStringArrayExtra(Const.RETORNO_NUMEROS_OPERACAO)[1]);
+                resultado.setText(data.getStringExtra(Const.RETORNO_RESULTADO));
+
+                trocaOperacaoPorCaractere(data.getStringExtra(Const.RETORNO_OPERACAO));
+            }
+        }
+    }
+
+    public void trocaOperacaoPorCaractere(String caractere) {
+        switch (caractere) {
+            case "+":
+                soma.setChecked(true);
+                operacao.setImageResource(R.drawable.icon_add);
+                break;
+            case "-":
+                subtrai.setChecked(true);
+                operacao.setImageResource(R.drawable.icon_minus);
+                break;
+            case "*":
+                multiplica.setChecked(true);
+                operacao.setImageResource(R.drawable.icon_mult);
+                break;
+            case "/":
+                divide.setChecked(true);
+                operacao.setImageResource(R.drawable.icon_equals);
+                break;
+            case "%":
+                resto.setChecked(true);
+                operacao.setImageResource(R.drawable.icon_percent);
+                break;
+            default:
+                Toast.makeText(this, "Selecione ao menos uma operação", Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
+    public void trocaOperacaoPorId(int idRadio) {
         switch (idRadio) {
             case R.id.optSoma:
                 operacao.setImageResource(R.drawable.icon_add);
@@ -177,6 +222,11 @@ public class MainActivity extends AppCompatActivity {
         limpa = findViewById(R.id.cmdLimpar);
         resultado = findViewById(R.id.lblResultado);
         radioGroup = findViewById(R.id.radioGroup);
+        soma = findViewById(R.id.optSoma);
+        subtrai = findViewById(R.id.optSubtrai);
+        multiplica = findViewById(R.id.optMultiplica);
+        divide = findViewById(R.id.optDivide);
+        resto = findViewById(R.id.optResto);
         operacao = findViewById(R.id.imgOperacao);
     }
 }

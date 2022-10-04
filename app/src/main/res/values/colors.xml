@@ -9,5 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bg_night">#232323</color>
     <color name="transparent">#00000000</color>
-    <color name="bg_resultado">#59000000</color>
+    <color name="bg_cinza">#59000000</color>
 </resources>
