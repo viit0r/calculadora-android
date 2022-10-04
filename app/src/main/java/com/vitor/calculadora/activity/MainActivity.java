@@ -84,15 +84,15 @@ public class MainActivity extends AppCompatActivity {
                                 operacoes.add(num1 + " % " + num2);
                                 break;
                             default:
-                                Toast.makeText(getApplicationContext(), "Selecione ao menos uma operação", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.selecione_uma_operacao), Toast.LENGTH_LONG).show();
                                 break;
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), "Digite os números para efetuar o cálculo", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.digite_numeros), Toast.LENGTH_LONG).show();
 
                     }
                 } catch (NumberFormatException e) {
-                    Toast.makeText(getApplicationContext(), "Digite somente números para efetuar o cálculo", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.digite_somente_numeros), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 txtValor1.setText("");
                 txtValor2.setText("");
                 operacao.setImageResource(0);
-                resultado.setText("0.0");
+                resultado.setText(Const.ZERO_PONTO_ZERO);
             }
         });
 
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String numeroResultado = resultado.getText().toString();
-                if (!numeroResultado.isEmpty() && !numeroResultado.equals("0.0")) {
+                if (!numeroResultado.isEmpty() && !numeroResultado.equals(Const.ZERO_PONTO_ZERO)) {
                     limpa.callOnClick();
                     txtValor1.setText(numeroResultado);
                 }
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 operacao.setImageResource(R.drawable.icon_percent);
                 break;
             default:
-                Toast.makeText(this, "Selecione ao menos uma operação", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.selecione_uma_operacao), Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 operacao.setImageResource(R.drawable.icon_percent);
                 break;
             default:
-                resultado.setText("Selecione ao menos uma operação.");
+                Toast.makeText(this, getString(R.string.selecione_uma_operacao), Toast.LENGTH_LONG).show();
                 break;
         }
     }

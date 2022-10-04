@@ -8,5 +8,7 @@ public interface Const {
     String RETORNO_RESULTADO = "RETORNO_RESULTADO";
     String REGEX_OPERACOES = "[0-9.]+";
     String REGEX_NUMEROS_OPERACAO = "[-*%\\/+]";
+    String REGEX_WHITESPACES = "\\s";
+    String ZERO_PONTO_ZERO = "0.0";
     int ABRE_HISTORICO = 1;
 }

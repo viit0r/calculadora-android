@@ -15,14 +15,14 @@
             android:id="@+id/lblResultadoLista"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Resultado"
+            android:text="@string/resultado"
             android:textSize="24sp"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/lblOperacao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Operacao"
+            android:text="@string/operacao"
             android:textSize="16sp" />
 
     </LinearLayout>

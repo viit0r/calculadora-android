@@ -57,8 +57,8 @@ public class HistoricoActivity extends AppCompatActivity {
                             String operacaoEscolhida = "";
                             String retornoResultado = "";
 
-                            numerosOperacao = operacoes.get(posicao).replaceAll("\\s", "").split(Const.REGEX_NUMEROS_OPERACAO);
-                            operacaoEscolhida = operacoes.get(posicao).replaceAll("\\s", "").split(Const.REGEX_OPERACOES)[1];
+                            numerosOperacao = operacoes.get(posicao).replaceAll(Const.REGEX_WHITESPACES, "").split(Const.REGEX_NUMEROS_OPERACAO);
+                            operacaoEscolhida = operacoes.get(posicao).replaceAll(Const.REGEX_WHITESPACES, "").split(Const.REGEX_OPERACOES)[1];
                             retornoResultado = resultados.get(posicao);
 
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -73,8 +73,8 @@ public class HistoricoActivity extends AppCompatActivity {
                     @Override
                     public void onItemLongClick(int position, View view) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(HistoricoActivity.this);
-                        builder.setMessage("Deseja mesmo remover o item do histórico?");
-                        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        builder.setMessage(getString(R.string.deseja_remover_historico));
+                        builder.setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 resultados.remove(position);
@@ -85,7 +85,7 @@ public class HistoricoActivity extends AppCompatActivity {
                                 temResultados();
                             }
                         });
-                        builder.setNegativeButton("Nao", null);
+                        builder.setNegativeButton(getString(R.string.nao), null);
                         builder.create().show();
                     }
                 });

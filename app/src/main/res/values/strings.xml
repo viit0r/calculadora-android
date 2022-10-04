@@ -1,14 +1,27 @@
 <resources>
+    <!-- Palavras -->
     <string name="app_name">Calculadora</string>
     <string name="resultado">Resultado</string>
+    <string name="operacao">Operacao</string>
     <string name="calcular">Calcular</string>
+    <string name="limpar">Limpar</string>
     <string name="sair">Sair</string>
     <string name="dividir">Dividir</string>
     <string name="multiplicar">Multiplicar</string>
     <string name="subtrair">Subtrair</string>
     <string name="somar">Somar</string>
     <string name="resto">Resto da divisão</string>
-    <string name="limpar">Limpar</string>
+    <string name="primeiro_numero">1° número</string>
+    <string name="segundo_numero">2° número</string>
     <string name="historico">Histórico</string>
     <string name="sem_historico">Sem histórico</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Nao</string>
+    <string name="zero_ponto_zero">0.0</string>
+
+    <!-- Frases -->
+    <string name="selecione_uma_operacao">Selecione ao menos uma operação</string>
+    <string name="deseja_remover_historico">Deseja mesmo remover o item do histórico?</string>
+    <string name="digite_numeros">Digite os números para efetuar o cálculo</string>
+    <string name="digite_somente_numeros">Digite somente números para efetuar o cálculo</string>
 </resources>
