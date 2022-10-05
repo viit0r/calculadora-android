@@ -17,7 +17,7 @@
     <string name="sem_historico">Sem histórico</string>
     <string name="sim">Sim</string>
     <string name="nao">Nao</string>
-    <string name="zero_ponto_zero">0.0</string>
+    <string name="zero">0</string>
 
     <!-- Frases -->
     <string name="selecione_uma_operacao">Selecione ao menos uma operação</string>

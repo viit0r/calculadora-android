@@ -53,39 +53,45 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     if (!txtValor1.getText().toString().isEmpty() && !txtValor2.getText().toString().isEmpty()) {
-                        double num1 = Double.parseDouble(txtValor1.getText().toString());
-                        double num2 = Double.parseDouble(txtValor2.getText().toString());
-                        Calculadora calculadora = new Calculadora(num1, num2);
+                        String primeiroNumero = txtValor1.getText().toString();
+                        String segundoNumero = txtValor2.getText().toString();
+                        String resultadoOperacao = "";
+                        Calculadora calculadora = new Calculadora(Double.parseDouble(primeiroNumero), Double.parseDouble(segundoNumero));
 
                         switch (radioGroup.getCheckedRadioButtonId()) {
                             case R.id.optSoma:
-                                resultado.setText(String.valueOf(calculadora.somar()));
-                                resultados.add(String.valueOf(calculadora.somar()));
-                                operacoes.add(num1 + " + " + num2);
+                                resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.SOMA));
+                                resultados.add(resultadoOperacao);
+                                operacoes.add(primeiroNumero + " + " + segundoNumero);
                                 break;
                             case R.id.optSubtrai:
-                                resultado.setText(String.valueOf(calculadora.subtrair()));
-                                resultados.add(String.valueOf(calculadora.subtrair()));
-                                operacoes.add(num1 + " - " + num2);
+                                resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.SUBTRACAO));
+                                resultados.add(resultadoOperacao);
+                                operacoes.add(primeiroNumero + " - " + segundoNumero);
                                 break;
                             case R.id.optMultiplica:
-                                resultado.setText(String.valueOf(calculadora.multiplicar()));
-                                resultados.add(String.valueOf(calculadora.multiplicar()));
-                                operacoes.add(num1 + " * " + num2);
+                                resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.MULTIPLICACAO));
+                                resultados.add(resultadoOperacao);
+                                operacoes.add(primeiroNumero + " * " + segundoNumero);
                                 break;
                             case R.id.optDivide:
-                                resultado.setText(String.valueOf(calculadora.dividir()));
-                                resultados.add(String.valueOf(calculadora.dividir()));
-                                operacoes.add(num1 + " / " + num2);
+                                resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.DIVISAO));
+                                resultados.add(resultadoOperacao);
+                                operacoes.add(primeiroNumero + " / " + segundoNumero);
                                 break;
                             case R.id.optResto:
-                                resultado.setText(String.valueOf(calculadora.resto()));
-                                resultados.add(String.valueOf(calculadora.resto()));
-                                operacoes.add(num1 + " % " + num2);
+                                resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.RESTO_DIVISAO));
+                                resultados.add(resultadoOperacao);
+                                operacoes.add(primeiroNumero + " % " + segundoNumero);
                                 break;
                             default:
                                 Toast.makeText(getApplicationContext(), getString(R.string.selecione_uma_operacao), Toast.LENGTH_LONG).show();
                                 break;
+                        }
+                        if (temDecimal(resultadoOperacao)){
+                            resultado.setText(resultadoOperacao);
+                        } else {
+                            resultado.setText(resultadoOperacao.replace(".0", ""));
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.digite_numeros), Toast.LENGTH_LONG).show();
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 txtValor1.setText("");
                 txtValor2.setText("");
                 operacao.setImageResource(0);
-                resultado.setText(Const.ZERO_PONTO_ZERO);
+                resultado.setText(getString(R.string.zero));
             }
         });
 
@@ -112,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String numeroResultado = resultado.getText().toString();
-                if (!numeroResultado.isEmpty() && !numeroResultado.equals(Const.ZERO_PONTO_ZERO)) {
+                if (!numeroResultado.isEmpty() && !numeroResultado.equals(getString(R.string.zero))) {
                     limpa.callOnClick();
                     txtValor1.setText(numeroResultado);
                 }
@@ -215,6 +221,14 @@ public class MainActivity extends AppCompatActivity {
             default:
                 Toast.makeText(this, getString(R.string.selecione_uma_operacao), Toast.LENGTH_LONG).show();
                 break;
+        }
+    }
+
+    public boolean temDecimal(String numero){
+        if (!numero.contains(".0")){
+            return true;
+        } else {
+            return false;
         }
     }
 

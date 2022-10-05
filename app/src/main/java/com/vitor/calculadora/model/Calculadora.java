@@ -1,31 +1,50 @@
 package com.vitor.calculadora.model;
 
+import com.vitor.calculadora.utils.Const;
+
 public class Calculadora {
 
-    private double numero1, numero2;
+    private static double dPrimeiroNumero, dSegundoNumero;
 
-    public Calculadora(double numero1, double numero2) {
-        this.numero1 = numero1;
-        this.numero2 = numero2;
+    public Calculadora(double primeiroNumeroParam, double segundoNumeroParam) {
+        dPrimeiroNumero = primeiroNumeroParam;
+        dSegundoNumero = segundoNumeroParam;
     }
 
-    public double somar(){
-        return numero1 + numero2;
+    public static double fazOperacao(String operacao) {
+        switch (operacao) {
+            case Const.SOMA:
+                return somar();
+            case Const.SUBTRACAO:
+                return subtrair();
+            case Const.MULTIPLICACAO:
+                return multiplicar();
+            case Const.DIVISAO:
+                return dividir();
+            case Const.RESTO_DIVISAO:
+                return resto();
+            default:
+                return 0;
+        }
     }
 
-    public double subtrair(){
-        return numero1 - numero2;
+    public static double somar() {
+        return dPrimeiroNumero + dSegundoNumero;
     }
 
-    public double multiplicar(){
-        return numero1 * numero2;
+    public static double subtrair() {
+        return dPrimeiroNumero - dSegundoNumero;
     }
 
-    public double dividir(){
-        return numero1 / numero2;
+    public static double multiplicar() {
+        return dPrimeiroNumero * dSegundoNumero;
     }
 
-    public double resto(){
-        return numero1 % numero2;
+    public static double dividir() {
+        return dPrimeiroNumero / dSegundoNumero;
+    }
+
+    public static double resto() {
+        return dPrimeiroNumero % dSegundoNumero;
     }
 }

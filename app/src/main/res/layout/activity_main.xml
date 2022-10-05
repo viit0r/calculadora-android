@@ -76,7 +76,7 @@
         android:gravity="end"
         android:paddingStart="10dp"
         android:paddingEnd="20dp"
-        android:text="@string/zero_ponto_zero"
+        android:text="@string/zero"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
