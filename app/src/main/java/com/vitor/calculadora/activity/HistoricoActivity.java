@@ -53,18 +53,8 @@ public class HistoricoActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(int posicao, View view) {
                         if (temResultados()) {
-                            String[] numerosOperacao = null;
-                            String operacaoEscolhida = "";
-                            String retornoResultado = "";
-
-                            numerosOperacao = operacoes.get(posicao).replaceAll(Const.REGEX_WHITESPACES, "").split(Const.REGEX_NUMEROS_OPERACAO);
-                            operacaoEscolhida = operacoes.get(posicao).replaceAll(Const.REGEX_WHITESPACES, "").split(Const.REGEX_OPERACOES)[1];
-                            retornoResultado = resultados.get(posicao);
-
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.putExtra(Const.RETORNO_NUMEROS_OPERACAO, numerosOperacao);
-                            intent.putExtra(Const.RETORNO_OPERACAO, operacaoEscolhida);
-                            intent.putExtra(Const.RETORNO_RESULTADO, retornoResultado);
+                            intent.putExtra(Const.RETORNO_POSICAO, posicao);
                             setResult(Activity.RESULT_OK, intent);
                             finish();
                         }

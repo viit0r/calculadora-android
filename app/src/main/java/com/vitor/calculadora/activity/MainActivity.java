@@ -26,6 +26,7 @@ import com.vitor.calculadora.utils.Const;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,40 +59,41 @@ public class MainActivity extends AppCompatActivity {
                         String resultadoOperacao = "";
                         Calculadora calculadora = new Calculadora(Double.parseDouble(primeiroNumero), Double.parseDouble(segundoNumero));
 
+                        radioGroup.getCheckedRadioButtonId();
+
                         switch (radioGroup.getCheckedRadioButtonId()) {
                             case R.id.optSoma:
                                 resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.SOMA));
-                                resultados.add(resultadoOperacao);
                                 operacoes.add(primeiroNumero + " + " + segundoNumero);
                                 break;
                             case R.id.optSubtrai:
                                 resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.SUBTRACAO));
-                                resultados.add(resultadoOperacao);
                                 operacoes.add(primeiroNumero + " - " + segundoNumero);
                                 break;
                             case R.id.optMultiplica:
                                 resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.MULTIPLICACAO));
-                                resultados.add(resultadoOperacao);
                                 operacoes.add(primeiroNumero + " * " + segundoNumero);
                                 break;
                             case R.id.optDivide:
                                 resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.DIVISAO));
-                                resultados.add(resultadoOperacao);
                                 operacoes.add(primeiroNumero + " / " + segundoNumero);
                                 break;
                             case R.id.optResto:
                                 resultadoOperacao = String.valueOf(calculadora.fazOperacao(Const.RESTO_DIVISAO));
-                                resultados.add(resultadoOperacao);
                                 operacoes.add(primeiroNumero + " % " + segundoNumero);
                                 break;
                             default:
                                 Toast.makeText(getApplicationContext(), getString(R.string.selecione_uma_operacao), Toast.LENGTH_LONG).show();
                                 break;
                         }
-                        if (temDecimal(resultadoOperacao)){
-                            resultado.setText(resultadoOperacao);
-                        } else {
-                            resultado.setText(resultadoOperacao.replace(".0", ""));
+                        if (radioGroup.getCheckedRadioButtonId() != -1){
+                            if (temDecimal(resultadoOperacao)){
+                                resultado.setText(resultadoOperacao);
+                                resultados.add(resultadoOperacao);
+                            } else {
+                                resultado.setText(removeDecimal(resultadoOperacao));
+                                resultados.add(removeDecimal(resultadoOperacao));
+                            }
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.digite_numeros), Toast.LENGTH_LONG).show();
@@ -109,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 radioGroup.clearCheck();
                 txtValor1.setText("");
                 txtValor2.setText("");
-                operacao.setImageResource(0);
                 resultado.setText(getString(R.string.zero));
             }
         });
@@ -164,11 +165,15 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 resultados = Calculo.getResultados();
                 operacoes = Calculo.getOperacoes();
-                txtValor1.setText(data.getStringArrayExtra(Const.RETORNO_NUMEROS_OPERACAO)[0]);
-                txtValor2.setText(data.getStringArrayExtra(Const.RETORNO_NUMEROS_OPERACAO)[1]);
-                resultado.setText(data.getStringExtra(Const.RETORNO_RESULTADO));
+                int posicao = data.getIntExtra(Const.RETORNO_POSICAO, 0);
 
-                trocaOperacaoPorCaractere(data.getStringExtra(Const.RETORNO_OPERACAO));
+                String retornoResultado = Calculo.getResultado(posicao);
+                Map<String, String> retornoOperacao = Calculo.getOperacao(posicao);
+
+                txtValor1.setText(retornoOperacao.get(Const.PRIMEIRO_NUMERO_OPERACAO));
+                txtValor2.setText(retornoOperacao.get(Const.SEGUNDO_NUMERO_OPERACAO));
+                trocaOperacaoPorCaractere(retornoOperacao.get(Const.OPERACAO));
+                resultado.setText(retornoResultado);
             }
         }
     }
@@ -219,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 operacao.setImageResource(R.drawable.icon_percent);
                 break;
             default:
-                Toast.makeText(this, getString(R.string.selecione_uma_operacao), Toast.LENGTH_LONG).show();
+                operacao.setImageResource(0);
                 break;
         }
     }
@@ -230,6 +235,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+
+    public String removeDecimal(String numero){
+        return numero.replace(".0","");
     }
 
     private void getReferences() {
